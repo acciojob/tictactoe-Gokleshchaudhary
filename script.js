@@ -53,3 +53,42 @@ function checkWinner() {
         return board[a] && board[a] === board[b] && board[a] === board[c];
     });
 }
+describe('Tic Tac Toe Game', () => {
+    beforeEach(() => {
+        cy.visit('path/to/your/index.html'); // Adjust the path as necessary
+    });
+
+    it('Should find the input tag', () => {
+        cy.get('#player-1').should('be.visible');
+        cy.get('#player-2').should('be.visible');
+    });
+
+    it('Shows player 1 win', () => {
+        cy.get('#player-1').type('Player 1');
+        cy.get('#player-2').type('Player 2');
+        cy.get('#submit').click();
+
+        // Simulate player moves that lead to a win for Player 1
+        cy.get('#1').click(); // Player 1's move
+        cy.get('#2').click(); // Player 2's move
+        cy.get('#4').click(); // Player 1's move
+        cy.get('#5').click(); // Player 2's move
+        cy.get('#7').click(); // Player 1's winning move
+        
+        cy.get('.message').should('contain', 'Player 1, congratulations you won!');
+    });
+
+    it('Shows player 2 win', () => {
+        cy.get('#player-1').type('Player 1');
+        cy.get('#player-2').type('Player 2');
+        cy.get('#submit').click();
+
+        // Simulate player moves that lead to a win for Player 2
+        cy.get('#1').click(); // Player 1's move
+        cy.get('#2').click(); // Player 2's winning move
+        cy.get('#3').click(); // Player 1's move
+        cy.get('#5').click(); // Player 2's winning move
+        
+        cy.get('.message').should('contain', 'Player 2, congratulations you won!');
+    });
+});
